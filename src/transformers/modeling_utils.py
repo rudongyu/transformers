@@ -1544,6 +1544,7 @@ class PreTrainedModel(nn.Module, ModuleUtilsMixin, GenerationMixin, PushToHubMix
             if not isinstance(config._attn_implementation, dict) and config._attn_implementation not in [
                 "eager",
                 "sdpa",
+                "max",
                 "flash_attention_2",
                 "flex_attention",
             ]:
@@ -1610,6 +1611,8 @@ class PreTrainedModel(nn.Module, ModuleUtilsMixin, GenerationMixin, PushToHubMix
                 torch.backends.cuda.enable_flash_sdp(False)
         elif isinstance(requested_attn_implementation, dict):
             config._attn_implementation = None
+        elif config._attn_implementation == "max":
+            pass
         else:
             config._attn_implementation = "eager"
 
